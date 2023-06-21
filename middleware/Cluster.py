@@ -17,7 +17,7 @@ from items import *
 from kafka import KafkaProducer
 from datetime import datetime, date
 from filestream_y.FileStream_y import stream_type
-from rediscluster import RedisCluster
+# from rediscluster import RedisCluster
 from config.spider_log import SpiderLog
 from asyncio_config.my_Requests import MyRequests, MyFormRequests
 from settings import REDIS_HOST_LISTS, Mysql, redis_connection, kafka_servers, kafka_connection, access_key_id, \
@@ -75,13 +75,13 @@ class ParentObj(SpiderLog, SingleTool):
         self.monitor = sys.argv[2] if len(sys.argv) > 2 else None
 
     def key_judge(self, item):
-        key_list = ['title', 'url', 'pub_time', 'source', 'html']
-        if isinstance(item, BiddingItem):
-            item = item.dict()
-        for k in key_list:
-            sgin = item.__contains__(k)
-            while not sgin:
-                return False
+        # key_list = ['title', 'url', 'pub_time', 'source', 'html']
+        # if isinstance(item, BiddingItem):
+        #     item = item.dict()
+        # for k in key_list:
+        #     sgin = item.__contains__(k)
+        #     while not sgin:
+        #         return False
         return True
 
     def value_judge(self, item):
@@ -97,7 +97,7 @@ class ParentObj(SpiderLog, SingleTool):
     def prints(self, item, is_replace=True, db=None, is_info=True, deal_time=True, sgin=''):
         info_item = {}
         item_last = {}
-        html = item.get('html')
+        # html = item.get('html')
         for k, v in item.items():
             if (v == None) or (v == 'None') or (v == ''):
                 continue
@@ -130,7 +130,7 @@ class ParentObj(SpiderLog, SingleTool):
             self.ka_success_count += 1
         elif db == 'mysql':
             self.db_success_count += 1
-        item_last['html'] = html
+        # item_last['html'] = html
         return item_last
 
     def get_bucket(self):
@@ -348,35 +348,35 @@ class KafkaDb(ParentObj):
         value_judge = False
         if self.isSubClassOf(item, SingleItem):
             item = item.dict()
-            if 'file_url' in item.keys():
-                del item['file_url']
-        if isinstance(item, BiddingItem) or isinstance(item, dict):
-            key_judge = self.key_judge(item)
-            value_judge = self.value_judge(item)
-        item['pub_time'] = self.date_refix(item.get('pub_time')) if item.get('pub_time') else None
-        if (key_judge == True and value_judge == True and item['pub_time']) or (
-                item.get('project_name') and self.spider_sign):
-            if self.pages:
-                item['monitor'] = True
-            if self.online and not self.monitor:
-                topic = kafka_servers['topic'] if key_judge and value_judge else 'proposed_tasks_mid'
-                self.producer.send(topic, json.dumps(item).encode('utf-8'))
-            self.send_log(req_id=0, code='40', log_level='INFO', url=item['url'], message='数据存储kafka成功',
-                          show_url=item.get('show_url', ''))
-            self.prints(item, is_replace=False, db='kafka', sgin='data_test' if not self.online else '')
-            # self.add_url_sha1(item['url']) if not item.get('show_url') else (self.add_url_sha1(item['url']), self.add_url_sha1(item.get('show_url'), sgin='show_'))
-            self.right_count += 1
-        else:
-            debug_info = value_judge
-            if (not key_judge and not value_judge) or self.spider_sign:
-                debug_info = 'project_name'
-            if debug_info and not item['pub_time']:
-                debug_info = 'pub_time'
-            self.logger.debug(
-                f'\033[5;31;1m{debug_info} \033[5;33;1mfield does not exist, Data validation failed, please check！\033[0m {item}')
-            self.send_log(req_id=0, code='31', log_level='WARN', url=item['url'], message=f'抓取结果缺少{debug_info}字段',
-                          show_url=item.get('show_url'))
-            self.error_count += 1
+        #     if 'file_url' in item.keys():
+        #         del item['file_url']
+        # if isinstance(item, BiddingItem) or isinstance(item, dict):
+        #     key_judge = self.key_judge(item)
+        #     value_judge = self.value_judge(item)
+        # item['pub_time'] = self.date_refix(item.get('pub_time')) if item.get('pub_time') else None
+        # if (key_judge == True and value_judge == True and item['pub_time']) or (
+        #         item.get('project_name') and self.spider_sign):
+        #     if self.pages:
+        #         item['monitor'] = True
+        #     if self.online and not self.monitor:
+        #         topic = kafka_servers['topic'] if key_judge and value_judge else 'proposed_tasks_mid'
+        #         self.producer.send(topic, json.dumps(item).encode('utf-8'))
+        # self.send_log(req_id=0, code='40', log_level='INFO', url=item['url'], message='数据存储kafka成功',
+        #               show_url=item.get('show_url', ''))
+        self.prints(item, is_replace=False, db='kafka', sgin='data_test' if not self.online else '')
+        # self.add_url_sha1(item['url']) if not item.get('show_url') else (self.add_url_sha1(item['url']), self.add_url_sha1(item.get('show_url'), sgin='show_'))
+        self.right_count += 1
+        # else:
+        #     debug_info = value_judge
+        #     if (not key_judge and not value_judge) or self.spider_sign:
+        #         debug_info = 'project_name'
+        #     if debug_info and not item['pub_time']:
+        #         debug_info = 'pub_time'
+        #     self.logger.debug(
+        #         f'\033[5;31;1m{debug_info} \033[5;33;1mfield does not exist, Data validation failed, please check！\033[0m {item}')
+        #     self.send_log(req_id=0, code='31', log_level='WARN', url=item['url'], message=f'抓取结果缺少{debug_info}字段',
+        #                   show_url=item.get('show_url'))
+        #     self.error_count += 1
         self.catch_count += 1
 
     def send_log(self, req_id, code, log_level, url, message, time='', formdata='', show_url=''):
@@ -414,8 +414,8 @@ class RedisDb(ParentObj):
                 for k, v in REDIS_HOST_LISTS[0].items():
                     self.pool = redis.ConnectionPool(host=k, port=v, db=1, decode_responses=True)
                     self.r = redis.Redis(connection_pool=self.pool)
-            elif len(REDIS_HOST_LISTS) > 1:
-                self.r = RedisCluster(startup_nodes=self.startup_nodes, decode_responses=True)
+            # elif len(REDIS_HOST_LISTS) > 1:
+            #     self.r = RedisCluster(startup_nodes=self.startup_nodes, decode_responses=True)
 
     def get_len(self, key):
         keys = self.get_keys(key)

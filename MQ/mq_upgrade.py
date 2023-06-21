@@ -29,7 +29,7 @@ class MqProducer:
         self.rabbit_password = Rabbitmq['password']  # 连接mq的各项参数
         self.rabbit_host = Rabbitmq['host']  # 连接mq的各项参数
         self.rabbit_port = Rabbitmq['port']  # 连接mq的各项参数
-        self.vhost_check = '%2F'  # 连接mq的各项参数
+        self.vhost_check = 'my_vhost'  # 连接mq的各项参数
         self.async_thread_pool = ThreadPoolExecutor()  # 线程池
         self.connections = Queue(maxsize=10)  # 连接池
         self.lock = threading.Lock()  # 线程锁
@@ -98,7 +98,7 @@ class MqProducer:
         """建立连接"""
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
-                host=self.rabbit_host, port=self.rabbit_port,
+                host=self.rabbit_host, port=self.rabbit_port,virtual_host=self.vhost_check,
                 credentials=pika.credentials.PlainCredentials(self.rabbit_username, self.rabbit_password), heartbeat=0
             )
         )

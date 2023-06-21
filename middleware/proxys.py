@@ -1,4 +1,5 @@
 import os
+
 os.environ.setdefault('AIOHTTP_NO_EXTENSIONS', '1')
 import aiohttp
 import requests
@@ -50,7 +51,9 @@ s = requests.session()
 # url = 'http://10.9.21.91:88/ippool'
 
 # url = 'http://proxy-service.bailian-ai.com/random'
-url = 'http://8.140.146.196:9090/qdb/get_proxy'  # 站大爷代理
+url = 'http://192.168.2.175:10001/getproxy?limit=100'
+
+
 def rand_choi_pool_response():
     try:
         response = s.get(url=url)
@@ -96,7 +99,6 @@ class Proxy_midddwaer(object):
     #     self.logger.name = logging.getLogger(__name__).name
     #     logging.getLogger("asyncio").setLevel(logging.WARNING)
 
-
     async def asy_rand_choi_pool_response(self):  # 适用于aiohttp
         try:
             async with aiohttp.ClientSession() as session:
@@ -112,26 +114,37 @@ class Proxy_midddwaer(object):
         global ip_lists
         global update
         if (len(ip_lists) == 0) or (time.time() - update >= 60):
-            response = await self.asy_rand_choi_pool_response()
-            while response == False:
-                response = await self.asy_rand_choi_pool_response()
-            try:
-                await self.deal_json(response=response)
-            except:
-                while len(ip_lists) == 0:
-                    try:
-                        response = await self.asy_rand_choi_pool_response()
-                        await self.deal_json(response=response)
-                    except:
-                        ip_lists = ip_lists
+            # response = await self.asy_rand_choi_pool_response()
+            # while response == False:
+            #     response = await self.asy_rand_choi_pool_response()
+            # try:
+            await self.deal_json2()
+            # except:
+            #     while len(ip_lists) == 0:
+            #         try:
+            #             response = await self.asy_rand_choi_pool_response()
+            #             await self.deal_json(response=response)
+            #         except:
+            #             ip_lists = ip_lists
         if len(ip_lists) != 0:
             proxy = ip_lists.pop()
             return proxy
 
     async def deal_json(self, response):
-        ippool = json.loads(response)['http']
+        #普通代理 当前boss代理更换频率不够 故用隧道代理
+        ippool = 'http://'+random.choice(json.loads(response))
+        #隧道代理
+        # ippool ='http://192.168.2.175:10001'
         ip_lists.append(ippool)
 
+
+
+    async def deal_json2(self):
+        #普通代理 当前boss代理更换频率不够 故用隧道代理
+        # ippool = 'http://'+random.choice(json.loads(response))
+        #隧道代理
+        ippool ='http://192.168.2.175:10001'
+        ip_lists.append(ippool)
     async def get_ua(self):
         user_agents = [
             'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60',

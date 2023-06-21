@@ -2,7 +2,7 @@ import os
 import sys
 import time
 import random
-from xpinyin import Pinyin
+# from xpinyin import Pinyin
 import requests
 from settings import log_path
 from middleware.Cluster import Cluster
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     start_run.run()""")
 
 cluster = Cluster()
-p = Pinyin()
+# p = Pinyin()
 
 
 def re_name(str_data: str):
@@ -172,7 +172,7 @@ def production(spider_name: str, is_increment: bool, pages: int, owner: str, rem
 
 
 if __name__ == '__main__':
-    production('ceshi', True, 50, '袁少航', '测试用的', 'ysh_spiders/ceshi/')
+    production('ceshi', True, 50, '刘庆川', '测试用的', 'ysh_spiders/ceshi/')
     # spider_name = sys.argv[1]
     # incremental = sys.argv[2]
     # interval_time = sys.argv[3]

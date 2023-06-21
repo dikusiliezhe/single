@@ -100,8 +100,9 @@ class Manager(Basic, LoopGetter):
 
     def open_spider(self, spider_name: str):
         """开启spider第一步检查状态"""
-        data = self.select(table='spiderlist_monitor', columns=['owner', 'remarks'],
-                           where=f"""spider_name = '{spider_name}'""")
+        # data = self.select(table='spiderlist_monitor', columns=['owner', 'remarks'],
+        #                    where=f"""spider_name = '{spider_name}'""")
+        data = False
         if data:
             self.owner = self.per_json(data, '[0].owner')
             self.source = self.per_json(data, '[0].remarks')
@@ -193,11 +194,11 @@ class Manager(Basic, LoopGetter):
                     self.getMessageCount() == 0)):
                 if self.Environmental_judgment() and not self.monitor:
                     self.send_close_info()
-                try:
-                    self.update(table='spiderlist_monitor', set_data={'is_run': 'no', 'end_time': self.now_time()},
-                                where=f"""`spider_name` = '{spider_name}'""")
-                except:
-                    self.logger.info("Crawler closed, abnormal update of running status，Forced closing！", exc_info=True)
+                # try:
+                    # self.update(table='spiderlist_monitor', set_data={'is_run': 'no', 'end_time': self.now_time()},
+                    #             where=f"""`spider_name` = '{spider_name}'""")
+                # except:
+                    # self.logger.info("Crawler closed, abnormal update of running status，Forced closing！", exc_info=True)
                 if self.monitor and not self.right_count:
                     self.logger.info('检测到没有新数据')
                     self.send_start_info()
