@@ -27,7 +27,8 @@ from settings import PREFETCH_COUNT, TIME_OUT, IS_PROXY, IS_SAMEIP, Asynch, Wait
     max_request, Agent_whitelist, retry_http_codes, UA_PROXY
 
 shutdown_lock = threading.Lock()
-
+import warnings
+warnings.filterwarnings("ignore")
 
 class LoopGetter(object):
     def __init__(self, custom_settings=None):
@@ -102,19 +103,19 @@ class Manager(Basic, LoopGetter):
         """开启spider第一步检查状态"""
         # data = self.select(table='spiderlist_monitor', columns=['owner', 'remarks'],
         #                    where=f"""spider_name = '{spider_name}'""")
-        data = False
-        if data:
-            self.owner = self.per_json(data, '[0].owner')
-            self.source = self.per_json(data, '[0].remarks')
-        if data and self.operating_system == 'linux' and self.pages and len(sys.argv) > 1:
-            self.update(table='spiderlist_monitor', set_data={'is_run': 'yes', 'start_time': self.now_time()},
-                        where=f"""`spider_name` = '{spider_name}'""")
-            if not self.monitor:
-                self.send_start_info()
-        elif not data:
-            self.logger.info(
-                'If you need to turn on increment, please register and try to run again. If not, please ignore it')
-            self.logger.info(f'Crawler service startup for {spider_name}')
+        # data = False
+        # if data:
+        #     self.owner = self.per_json(data, '[0].owner')
+        #     self.source = self.per_json(data, '[0].remarks')
+        # if data and self.operating_system == 'linux' and self.pages and len(sys.argv) > 1:
+        #     self.update(table='spiderlist_monitor', set_data={'is_run': 'yes', 'start_time': self.now_time()},
+        #                 where=f"""`spider_name` = '{spider_name}'""")
+        #     if not self.monitor:
+        #         self.send_start_info()
+        # elif not data:
+        #     self.logger.info(
+        #         'If you need to turn on increment, please register and try to run again. If not, please ignore it')
+        #     self.logger.info(f'Crawler service startup for {spider_name}')
         self.logger.info('Crawler program starts')
         return True
 
@@ -179,8 +180,8 @@ class Manager(Basic, LoopGetter):
                 spider_path = os.path.join(pwd, f'{self.name}.py')
                 item = {'task_name': spider_path, 'local_time': self.now_time()}
                 try:
-                    self.producer.send('is_real_run_test', json.dumps(item).encode('utf-8'))
-                    self.producer.flush()
+                    # self.producer.send('is_real_run_test', json.dumps(item).encode('utf-8'))
+                    # self.producer.flush()
                     self.logger.info(f'检测到有新数据，任务已入队列, {item}')
                 except:
                     self.logger.error('kafka生产者异常', exc_info=True)

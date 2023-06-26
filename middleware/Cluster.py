@@ -320,7 +320,12 @@ class KafkaDb(ParentObj):
                     globals()[varName] = value
 
         if kafka_connection:
-            self.producer = KafkaProducer(bootstrap_servers=kafka_servers['server'], max_request_size=3145728,
+            self.producer = KafkaProducer(security_protocol=kafka_servers["security_protocol"],
+                                          sasl_mechanism=kafka_servers["sasl_mechanism"],
+                                          sasl_plain_username=kafka_servers["sasl_plain_username"],
+                                          sasl_plain_password=kafka_servers["sasl_plain_password"],
+                                          bootstrap_servers=kafka_servers['server'],
+                                          max_request_size=3145728,
                                           api_version=(0, 10, 2))
 
     def key_judge(self, item):
@@ -343,11 +348,11 @@ class KafkaDb(ParentObj):
                 return k
         return True
 
-    def kafka_producer(self, item):
+    def kafka_producer(self, item, topic):
         key_judge = False
         value_judge = False
-        if self.isSubClassOf(item, SingleItem):
-            item = item.dict()
+        # if self.isSubClassOf(item, SingleItem):
+        #     item = item.dict()
         #     if 'file_url' in item.keys():
         #         del item['file_url']
         # if isinstance(item, BiddingItem) or isinstance(item, dict):
@@ -358,11 +363,10 @@ class KafkaDb(ParentObj):
         #         item.get('project_name') and self.spider_sign):
         #     if self.pages:
         #         item['monitor'] = True
-        #     if self.online and not self.monitor:
-        #         topic = kafka_servers['topic'] if key_judge and value_judge else 'proposed_tasks_mid'
-        #         self.producer.send(topic, json.dumps(item).encode('utf-8'))
-        # self.send_log(req_id=0, code='40', log_level='INFO', url=item['url'], message='数据存储kafka成功',
-        #               show_url=item.get('show_url', ''))
+        if self.online and not self.monitor:
+            # topic = topic
+            self.producer.send(topic, json.dumps(item).encode('utf-8')).get(timeout=30)
+        # self.send_log(req_id=0, code='40', log_level='INFO',  message='数据存储kafka成功')
         self.prints(item, is_replace=False, db='kafka', sgin='data_test' if not self.online else '')
         # self.add_url_sha1(item['url']) if not item.get('show_url') else (self.add_url_sha1(item['url']), self.add_url_sha1(item.get('show_url'), sgin='show_'))
         self.right_count += 1
@@ -396,7 +400,7 @@ class KafkaDb(ParentObj):
             'show_url': show_url if show_url else ''
         }
         if self.online:
-            self.producer.send('qdb_crawler_log_online_topic', json.dumps(log_info).encode('utf-8'))
+            #     self.producer.send('qdb_crawler_log_online_topic', json.dumps(log_info).encode('utf-8'))
             self.logger.info(f'Log details：{log_info}')
 
 

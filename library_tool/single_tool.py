@@ -38,7 +38,8 @@ from Crypto.Util.Padding import pad
 from binascii import *
 from filestream_y.FileStream_y import stream_type
 from library_tool.ocrutils import RecoFactory
-
+import warnings
+warnings.filterwarnings("ignore")
 
 class SingleTool(object):
 
