@@ -177,6 +177,7 @@ class MysqlDb(ParentObj):
                 s = globals().get(varName)
                 if s:
                     globals()[varName] = value
+
         if IS_INSERT:
             self.host = Mysql['MYSQL_HOST']
             self.port = Mysql['PORT']
