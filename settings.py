@@ -65,7 +65,7 @@ Rabbitmq = {
     'username': 'admin',
     'password': 'admin',
     # 'host': '192.168.22.81',  # 线下
-    'host': '192.168.22.81',  # 线上
+    'host': '127.0.0.1',  # 线上
     'port': 5672,
     'max_retries': 3,  # 最大重连次数
     'async_thread_pool_size': 4,  # 异步发送线程池
