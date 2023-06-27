@@ -189,6 +189,7 @@ class MysqlDb(ParentObj):
             self.condition_re = re.compile('(.*?)\\(')
             self.params_re = re.compile('\\((.*?)\\)')
 
+
     def create_pool(self):
         conn = ConnectionPool(
             pool_name='mypool',
