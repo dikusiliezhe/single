@@ -92,6 +92,7 @@ class QimaidataSpider(Manager):
                                          meta={'parms': parms_dict, 'app': app})
 
     def parse(self, response):
+        self.logger.info(response.text)
         parms = response.meta.get('parms')
         app = response.meta.get('app')
         now_time = datetime.datetime.now().replace(minute=0, second=0, microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
