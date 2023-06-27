@@ -168,6 +168,7 @@ class ParentObj(SpiderLog, SingleTool):
         return oss_url
 
 
+
 class MysqlDb(ParentObj):
     def __init__(self, custom_settings=None, **kwargs):
         super().__init__(custom_settings=custom_settings, **kwargs)
