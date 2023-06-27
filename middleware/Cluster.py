@@ -348,7 +348,7 @@ class KafkaDb(ParentObj):
                 return k
         return True
 
-    def kafka_producer(self, item, topic):
+    def kafka_producer(self, topic, item):
         key_judge = False
         value_judge = False
         # if self.isSubClassOf(item, SingleItem):
