@@ -129,5 +129,10 @@ class QimaidataSpider(Manager):
 
 
 if __name__ == '__main__':
-    start_run = QimaidataSpider()
-    start_run.run()
+    try:
+        start_run = QimaidataSpider()
+        start_run.run()
+    except:
+        import traceback
+        traceback.print_exc()
+
