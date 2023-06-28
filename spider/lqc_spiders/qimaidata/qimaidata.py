@@ -6,19 +6,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)).split('spider')[0])
 from config.all_config import *
 
 
-def get_ss(ss):
-    """
-    :param js_path: js文件路径
-    :param function_name: 要执行的js方法名
-    :param kwargs: 执行js时需要传的参数
-    :return: js返回的结果
-    """
-    js = ""
-    fp1 = open('/home/work/single/spider/lqc_spiders/qimaidata/tools.js', encoding='utf-8')
-    js += fp1.read()
-    fp1.close()
-    ctx2 = execjs.compile(js)
-    return ctx2.call('beforeRequest', ss)
+
 
 
 class QimaidataSpider(Manager):
@@ -59,7 +47,7 @@ class QimaidataSpider(Manager):
             # 'Cookie': 'PHPSESSID=hgaqppun755a6jgt0o7ihivuul; tgw_l7_route=29ef178f2e0a875a4327cbfe5fbcff7e'
         }
         self.app_list = [{'name': 'boss直聘', 'appid': '887314963', 'pages': 336}]
-
+        # self.online=True
     def start_requests(self):
         for app in self.app_list:
             parms_dict = {
@@ -71,7 +59,7 @@ class QimaidataSpider(Manager):
             print(parms_dict)
             url_list = [
                 {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
-                    get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
+                    self.get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
                  'page': app['pages'],
                  'data': 'country=cn&sdate={}&edate={}&appid={}&version={}&device={}&hints_min=&hints_max=&ranking_min=&ranking_max=&result_min=&result_max=&search=&quick_rank=all&type=all&page={}&size=100&sort=srank&sort_type=asc&current_type=all',
                  },
@@ -104,8 +92,19 @@ class QimaidataSpider(Manager):
                         'word_id': data['word_id'], 'srank': data['srank'], 'now_time': now_time}
             self.kafka_producer('boss.de_nine.spider.qimai_App_spider', msg_dict)
 
-
-
+    def get_ss(self, ss):
+        """
+        :param js_path: js文件路径
+        :param function_name: 要执行的js方法名
+        :param kwargs: 执行js时需要传的参数
+        :return: js返回的结果
+        """
+        js = ""
+        fp1 = open('./tools.js', encoding='utf-8')
+        js += fp1.read()
+        fp1.close()
+        ctx2 = execjs.compile(js)
+        return ctx2.call('beforeRequest', ss)
 
 
             # g = {
