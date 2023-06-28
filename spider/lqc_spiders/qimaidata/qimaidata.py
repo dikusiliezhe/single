@@ -14,7 +14,7 @@ def get_ss(ss):
     :return: js返回的结果
     """
     js = ""
-    fp1 = open('./tools.js', encoding='utf-8')
+    fp1 = open('/home/work/single/spider/lqc_spiders/qimaidata/tools.js', encoding='utf-8')
     js += fp1.read()
     fp1.close()
     ctx2 = execjs.compile(js)
@@ -69,12 +69,6 @@ class QimaidataSpider(Manager):
                 'version': 'ios14',
                 'device': 'iphone'}
             print(parms_dict)
-            try:
-                self.logger.info(
-                    get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, }))
-            except:
-                import traceback
-                traceback.print_exc()
             url_list = [
                 {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
                     get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
