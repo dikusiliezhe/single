@@ -82,6 +82,7 @@ class QimaidataSpider(Manager):
                  'data': 'country=cn&sdate={}&edate={}&appid={}&version={}&device={}&hints_min=&hints_max=&ranking_min=&ranking_max=&result_min=&result_max=&search=&quick_rank=all&type=all&page={}&size=100&sort=srank&sort_type=asc&current_type=all',
                  },
 
+
             ]
             for url_page in url_list:
                 if self.pages:
