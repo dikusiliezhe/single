@@ -69,6 +69,12 @@ class QimaidataSpider(Manager):
                 'version': 'ios14',
                 'device': 'iphone'}
             print(parms_dict)
+            try:
+                self.logger.info(
+                    get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, }))
+            except:
+                import traceback
+                traceback.print_exc()
             url_list = [
                 {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
                     get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
