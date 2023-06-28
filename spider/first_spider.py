@@ -21,7 +21,7 @@ class first_spider(Manager):
     name = 'first_spider'
     custom_settings = {
         # 'retry_http_codes': [202, 412],
-        'Waiting_time': 1,
+        'Waiting_time': 100,
         'IS_PROXY': True,
         'IS_SAMEIP': False,
         'UA_PROXY': False,
