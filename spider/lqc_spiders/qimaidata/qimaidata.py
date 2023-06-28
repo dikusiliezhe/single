@@ -84,6 +84,7 @@ class QimaidataSpider(Manager):
                     pages = url_page.get('page')
                 for page in range(1, pages):
                     url = url_page.get('url')
+                    self.logger.info(url)
                     # url = 'https://api.qimai.cn/appDetail/keywordDetail?analysis=dkZJBhgIPR9BUF4PSwpcTxIJFQw8HA5UWFsjR1MPA1dWU1pMQUoAcRRQ'
                     data = url_page.get('data')
                     data = data.format(parms_dict["sdate"], parms_dict["edate"], parms_dict["appid"],
