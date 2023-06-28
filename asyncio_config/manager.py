@@ -312,7 +312,7 @@ class Manager(Basic, LoopGetter):
             if self.pages and not dont_filter:
                 if await self.contarst_data(url):
                     self.num += 1
-                    return
+                    # return
             new_body, proxy, headers, meta = await self.request_preprocess(body, url, proxy, is_change, meta, req_id,
                                                                            params, data, json_params, headers)
 
