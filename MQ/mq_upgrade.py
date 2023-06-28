@@ -3,6 +3,7 @@
 # @Date: 2023-02-23- 09:56:50
 # @Version: 1.0.0
 # @Description: rabbitmq队列中间件
+import logging
 import sys
 import time
 import pika
@@ -178,6 +179,7 @@ class MqProducer:
     @retrying(stop_max_attempt_number=Rabbitmq['max_retries'], befor_fun=reconnect, befor_parmas='send_message')  # 重试装饰器
     def send_message(self, message, is_thread=False):
         """生产者"""
+        logging.info('12332112321321321321321312321321')
         message, level = self.make_data(message)
         channel = self.send_channel
         if is_thread:
