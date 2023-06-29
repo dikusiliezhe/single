@@ -16,7 +16,7 @@ consumer = KafkaConsumer(
     sasl_plain_password="8iDzhVExautncdBd6puPtxJudQe5KH5L",
     api_version=(0, 10, 2),
     bootstrap_servers=kafka_server,  # 替换成消费者组的ID
-    auto_offset_reset='earliest',
+    # auto_offset_reset='earliest',
 )
 
 # 循环消费消息
