@@ -11,7 +11,16 @@ from config.all_config import *
 
 class QimaidataSpider(Manager):
     name = 'qimaidata'
-
+    custom_settings = {
+        # 'retry_http_codes': [202, 412],
+        'Waiting_time': 300,
+        'IS_PROXY': True,
+        'IS_SAMEIP': False,
+        'UA_PROXY': False,
+        # 'X_MAX_PRIORITY': 15,
+        # 'max_request': 1,
+        # 'PREFETCH_COUNT': 50
+    }
     def __init__(self):
         Manager.__init__(self)
         self.header = {
