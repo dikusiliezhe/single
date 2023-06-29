@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # 并发数
-PREFETCH_COUNT = 1
+PREFETCH_COUNT = 50
 
 # 最大优先级数
 X_MAX_PRIORITY = 15
@@ -80,7 +80,7 @@ Delay_time = 4  # 自动关闭程序最大延迟时间
 # custom_settings = {}
 
 # log_path = '/Users/admin/Downloads/single_process-main/log_filed'  # 日志保存路径
-log_path = '/home/work/single/log_filed/'  # 日志保存路径
+log_path = '/home/work/log_filed/'  # 日志保存路径
 log_level = 'DEBUG'  # 日志级别
 
 # 邮件发送
