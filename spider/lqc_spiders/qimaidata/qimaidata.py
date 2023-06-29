@@ -56,8 +56,10 @@ class QimaidataSpider(Manager):
             # 'Cookie': 'PHPSESSID=hgaqppun755a6jgt0o7ihivuul; tgw_l7_route=29ef178f2e0a875a4327cbfe5fbcff7e'
         }
         self.app_list = [{'name': 'boss直聘', 'appid': '887314963', 'pages': 336}]
+        self.logger.info('111111111111111111111111')
         # self.online=True
     def start_requests(self):
+        self.logger.info('3333333333333333333333333')
         for app in self.app_list:
             parms_dict = {
                 'sdate': datetime.date.today().strftime("%Y-%m-%d"),
@@ -65,7 +67,7 @@ class QimaidataSpider(Manager):
                 'appid': app['appid'],
                 'version': 'ios14',
                 'device': 'iphone'}
-            print(parms_dict)
+            self.logger.info('2222222222222222222222')
             url_list = [
                 {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
                     self.get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
@@ -76,6 +78,7 @@ class QimaidataSpider(Manager):
 
             ]
             for url_page in url_list:
+                self.logger.info('44444444444444444444444')
                 if self.pages:
                     pages = self.pages
                 else:
