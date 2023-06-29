@@ -309,10 +309,10 @@ class Manager(Basic, LoopGetter):
         req_id = self.get_inttime()
         try:
             # 监测环境下，进行标书请求去重
-            if self.pages and not dont_filter:
-                if await self.contarst_data(url):
-                    self.num += 1
-                    return
+            # if self.pages and not dont_filter:
+                # if await self.contarst_data(url):
+                #     self.num += 1
+                #     return
             new_body, proxy, headers, meta = await self.request_preprocess(body, url, proxy, is_change, meta, req_id,
                                                                            params, data, json_params, headers)
 

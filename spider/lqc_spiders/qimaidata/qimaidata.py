@@ -56,10 +56,8 @@ class QimaidataSpider(Manager):
             # 'Cookie': 'PHPSESSID=hgaqppun755a6jgt0o7ihivuul; tgw_l7_route=29ef178f2e0a875a4327cbfe5fbcff7e'
         }
         self.app_list = [{'name': 'boss直聘', 'appid': '887314963', 'pages': 336}]
-        self.logger.info('111111111111111111111111')
         # self.online=True
     def start_requests(self):
-        self.logger.info('3333333333333333333333333')
         for app in self.app_list:
             parms_dict = {
                 'sdate': datetime.date.today().strftime("%Y-%m-%d"),
@@ -67,7 +65,6 @@ class QimaidataSpider(Manager):
                 'appid': app['appid'],
                 'version': 'ios14',
                 'device': 'iphone'}
-            self.logger.info('2222222222222222222222')
             url_list = [
                 {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
                     self.get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
@@ -78,14 +75,12 @@ class QimaidataSpider(Manager):
 
             ]
             for url_page in url_list:
-                self.logger.info('44444444444444444444444')
                 if self.pages:
                     pages = self.pages
                 else:
                     pages = url_page.get('page')
                 for page in range(1, pages):
                     url = url_page.get('url')
-                    self.logger.info(url)
                     # url = 'https://api.qimai.cn/appDetail/keywordDetail?analysis=dkZJBhgIPR9BUF4PSwpcTxIJFQw8HA5UWFsjR1MPA1dWU1pMQUoAcRRQ'
                     data = url_page.get('data')
                     data = data.format(parms_dict["sdate"], parms_dict["edate"], parms_dict["appid"],
@@ -94,7 +89,6 @@ class QimaidataSpider(Manager):
                                          meta={'parms': parms_dict, 'app': app})
 
     def parse(self, response):
-        self.logger.info(response.text)
         parms = response.meta.get('parms')
         app = response.meta.get('app')
         now_time = datetime.datetime.now().replace(minute=0, second=0, microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
@@ -112,19 +106,10 @@ class QimaidataSpider(Manager):
         :return: js返回的结果
         """
         js = ""
-        self.logger.info(ss)
         fp1 = open('./tools.js', encoding='utf-8')
-        self.logger.info('4444444444444444444444444')
         js += fp1.read()
-        self.logger.info('555555555555555555555555555')
         fp1.close()
-        self.logger.info('666666666666666666666666')
-        try:
-            ctx2 = execjs.compile(js)
-        except:
-            import traceback
-            traceback.print_exc()
-        self.logger.info('7777777777777777777777777')
+        ctx2 = execjs.compile(js)
         return ctx2.call('beforeRequest', ss)
 
 

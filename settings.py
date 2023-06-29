@@ -56,7 +56,7 @@ OTHER_Mysql = {
     'MYSQL_PASSWORD': 'yours',
     'PORT': 3306,
 }
-IS_INSERT = True  # 是否开启mysql连接
+IS_INSERT = False  # 是否开启mysql连接
 OTHER_DB = False  # 是否开启第二个数据库连接
 
 # RabbitMQ服务器的地址及各项参数
@@ -80,7 +80,7 @@ Delay_time = 4  # 自动关闭程序最大延迟时间
 # custom_settings = {}
 
 # log_path = '/Users/admin/Downloads/single_process-main/log_filed'  # 日志保存路径
-log_path = '/home/work/single/log_filed/'  # 日志保存路径
+log_path = '/home/work/log_filed/'  # 日志保存路径
 log_level = 'DEBUG'  # 日志级别
 
 # 邮件发送
