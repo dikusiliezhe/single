@@ -11,7 +11,7 @@ kafka_server = ['10.64.2.190:9092', '10.64.2.47:9092', '10.64.2.104:9092', '10.6
 # 创建Kafka消费者实例
 consumer = KafkaConsumer(
     'boss.de_nine.spider.qimai_App_spider',# 替换成你要消费的Topic名称
-    group_id='test11232',
+    group_id='test0629',
     security_protocol="SASL_PLAINTEXT", sasl_mechanism="SCRAM-SHA-256", sasl_plain_username="de_nine",
     sasl_plain_password="8iDzhVExautncdBd6puPtxJudQe5KH5L",
     api_version=(0, 10, 2),
