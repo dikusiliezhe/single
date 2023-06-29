@@ -112,10 +112,15 @@ class QimaidataSpider(Manager):
         :return: js返回的结果
         """
         js = ""
+        self.logger.info(ss)
         fp1 = open('./tools.js', encoding='utf-8')
+        self.logger.info('4444444444444444444444444')
         js += fp1.read()
+        self.logger.info('555555555555555555555555555')
         fp1.close()
+        self.logger.info('666666666666666666666666')
         ctx2 = execjs.compile(js)
+        self.logger.info('7777777777777777777777777')
         return ctx2.call('beforeRequest', ss)
 
 
