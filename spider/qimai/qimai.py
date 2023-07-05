@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import logging
 sys.path.append(os.path.abspath(os.path.dirname(__file__)).split('spider')[0])
+logging.info(os.path.dirname(__file__))
+logging.info(os.path.abspath(os.path.dirname(__file__)))
+logging.info(os.path.abspath(os.path.dirname(__file__)).split('spider')[0])
 from config.all_config import *
 
 
