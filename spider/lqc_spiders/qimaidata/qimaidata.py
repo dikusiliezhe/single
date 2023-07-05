@@ -126,6 +126,7 @@ class QimaidataSpider(Manager):
 
 
 
+
 if __name__ == '__main__':
     start_run = QimaidataSpider()
     start_run.run()
