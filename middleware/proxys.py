@@ -139,7 +139,7 @@ class Proxy_midddwaer(object):
         #普通代理 当前boss代理更换频率不够 故用隧道代理
         # ippool = 'http://'+random.choice(json.loads(response))
         #隧道代理
-        ippool ='http://172.18.54.164:10001' if sys.platform == 'linux' else 'http://192.168.2.175:10001'
+        ippool ='http://172.18.54.164:10001' if sys.platform == 'linux' else 'http://192.168.22.81:10001'
         ip_lists.append(ippool)
     async def get_ua(self):
         user_agents = [

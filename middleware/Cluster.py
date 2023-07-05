@@ -369,7 +369,7 @@ class KafkaDb(ParentObj):
         #         item['monitor'] = True
         if self.online and not self.monitor:
             # topic = topic
-            self.producer.send(topic, json.dumps(item).encode('utf-8')).get(timeout=30)
+            self.producer.send(topic, json.dumps(item, ensure_ascii=False).encode('utf-8')).get(timeout=30)
         # self.send_log(req_id=0, code='40', log_level='INFO',  message='数据存储kafka成功')
         self.prints(item, is_replace=False, db='kafka', sgin='data_test' if not self.online else '')
         # self.add_url_sha1(item['url']) if not item.get('show_url') else (self.add_url_sha1(item['url']), self.add_url_sha1(item.get('show_url'), sgin='show_'))
