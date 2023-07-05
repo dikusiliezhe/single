@@ -20,6 +20,7 @@ class QimaiSpider(Manager):
         # 'PREFETCH_COUNT': 50
     }
 
+
     def __init__(self):
         Manager.__init__(self)
         self.header = {
