@@ -9,6 +9,7 @@ logging.info(os.path.abspath(os.path.dirname(__file__)).split('spider')[0])
 from config.all_config import *
 
 
+
 class QimaiSpider(Manager):
     name = 'qimai'
 
