@@ -8,11 +8,10 @@ from config.all_config import *
 
 
 
-
 class QimaidataSpider(Manager):
     name = 'qimaidata'
     custom_settings = {
-        'PREFETCH_COUNT': 5,
+        'PREFETCH_COUNT': 50,
         # 'retry_http_codes': [202, 412],
         'Waiting_time': 300,
         'IS_PROXY': True,
@@ -93,10 +92,11 @@ class QimaidataSpider(Manager):
         parms = response.meta.get('parms')
         app = response.meta.get('app')
         now_time = datetime.datetime.now().replace(minute=0, second=0, microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
+        stamp = self.time2stamp(now_time, level=1000)
         data_list = json.loads(response.text).get('data')
         for data in data_list:
             msg_dict = {'app_name': app['name'], 'appid': app['appid'], 'word_name': data['word_name'],
-                        'word_id': data['word_id'], 'srank': data['srank'], 'now_time': now_time}
+                        'word_id': data['word_id'], 'srank': data['srank'], 'now_time': now_time, 'now_time_stamp':stamp}
             self.kafka_producer('boss.de_nine.spider.qimai_App_spider', msg_dict)
 
     def get_ss(self, ss):
@@ -114,32 +114,8 @@ class QimaidataSpider(Manager):
         return ctx2.call('beforeRequest', ss)
 
 
-            # g = {
-            #     'url': "/app/keywordHistory",
-            #     'baseURL': "https://api.qimai.cn",
-            #     'params': {
-            #         "version": parms['version'],
-            #         "device": parms['device'],
-            #         "country": "cn",
-            #         "appid": parms['appid'],
-            #         "word": data['word_name'],
-            #         "day": 0,
-            #         "keyword": '',
-            #         "sdate": parms['sdate'],
-            #         "edate": parms['edate'],
-            #         "word_id": data['word_id']
-            #     },
-            # }
-            #
-            # analysis = get_ss(g)
-            # detail_url = f"https://api.qimai.cn/app/keywordHistory?analysis={analysis}&version={g['params']['version']}&device={g['params']['device']}&country=cn&appid={g['params']['appid']}&word={g['params']['appid']}%E7%9B%B4%E8%81%98%E7%89%9B%E4%BA%BA%E7%89%88&day=0&sdate={g['params']['sdate']}&edate={g['params']['edate']}&word_id={g['params']['word_id']}"
-
 
 if __name__ == '__main__':
-    try:
-        start_run = QimaidataSpider()
-        start_run.run()
-    except:
-        import traceback
-        traceback.print_exc()
+    start_run = QimaidataSpider()
+    start_run.run()
 
