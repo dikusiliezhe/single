@@ -112,11 +112,7 @@ class QimaiSpider(Manager):
         fp1 = open('./tools.js', encoding='utf-8')
         js += fp1.read()
         fp1.close()
-        # try:
         ctx2 = execjs.compile(js)
-        # except:
-        #     import traceback
-        #     self.logger.info(traceback.print_exc())
         self.logger.info('55555555555555555')
         return ctx2.call('beforeRequest', ss)
 
