@@ -114,7 +114,12 @@ class QimaidataSpider(Manager):
         self.logger.info('44444444444444444')
         js += fp1.read()
         fp1.close()
-        ctx2 = execjs.compile(js)
+        self.logger.info(js)
+        try:
+            ctx2 = execjs.compile(js)
+        except :
+            import traceback
+            traceback.print_exc()
         self.logger.info('55555555555555555')
         return ctx2.call('beforeRequest', ss)
 
