@@ -14,7 +14,7 @@ from jinja2 import Template
 model = Template("""# -*- coding: utf-8 -*-
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.dirname(__file__)).split('spider')[0])
+sys.path.append(os.path.abspath(os.path.dirname(__file__)).split('spiders')[0])
 from config.all_config import *
 
 
@@ -80,7 +80,7 @@ def get_path(spider_name: str, file_dir: str):
     :param file_dir: 爬虫文件目录
     :return: 爬虫目录， 爬虫文件路径， 使用者目录
     """
-    base_path = 'spider'
+    base_path = 'spiders'
     current_path = os.path.join(os.getcwd(), base_path)
     spider_path = os.path.join(current_path, file_dir)
     file_path = os.path.join(spider_path, f'{spider_name}.py')
