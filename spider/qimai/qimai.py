@@ -120,6 +120,7 @@ class QimaiSpider(Manager):
         return ctx2.call('beforeRequest', ss)
 
 
+
 if __name__ == '__main__':
     start_run = QimaiSpider()
     start_run.run()
