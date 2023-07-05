@@ -65,6 +65,7 @@ class QimaidataSpider(Manager):
                 'appid': app['appid'],
                 'version': 'ios14',
                 'device': 'iphone'}
+            self.logger.info('1111111111111111111')
             url_list = [
                 {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
                     self.get_ss({'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
@@ -81,6 +82,7 @@ class QimaidataSpider(Manager):
                     pages = url_page.get('page')
                 for page in range(1, pages):
                     url = url_page.get('url')
+                    self.logger.info('2222222222222222222')
                     # url = 'https://api.qimai.cn/appDetail/keywordDetail?analysis=dkZJBhgIPR9BUF4PSwpcTxIJFQw8HA5UWFsjR1MPA1dWU1pMQUoAcRRQ'
                     data = url_page.get('data')
                     data = data.format(parms_dict["sdate"], parms_dict["edate"], parms_dict["appid"],
@@ -107,10 +109,13 @@ class QimaidataSpider(Manager):
         :return: js返回的结果
         """
         js = ""
+        self.logger.info('33333333333333333')
         fp1 = open('./tools.js', encoding='utf-8')
+        self.logger.info('44444444444444444')
         js += fp1.read()
         fp1.close()
         ctx2 = execjs.compile(js)
+        self.logger.info('55555555555555555')
         return ctx2.call('beforeRequest', ss)
 
 
