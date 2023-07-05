@@ -93,8 +93,8 @@ function beforeRequest(t) {
   var v = "@#";             // v = i[Bt](i[Ht](Nt), d) = pf(lf("OFo="), d) = "@#"
   try {
     let e,
-      // r = +new Date() - (s || 0) - 1661224081041,
-      r = '26521242667',
+      r = +new Date() - (s || 0) - 1661224081041,
+      // r = '26521242667',
       a = [];
     void 0 === t.params && (t.params = {});
     Object.keys(t.params).forEach(function (n) {
