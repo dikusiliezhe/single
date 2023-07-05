@@ -67,9 +67,7 @@ class QimaiSpider(Manager):
                 'version': 'ios14',
                 'device': 'iphone'}
             url_list = [
-                {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}'.format(
-                    self.get_ss(
-                        {'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, })),
+                {'url': 'https://api.qimai.cn/appDetail/keywordDetail?analysis={}',
                     'page': app['pages'],
                     'data': 'country=cn&sdate={}&edate={}&appid={}&version={}&device={}&hints_min=&hints_max=&ranking_min=&ranking_max=&result_min=&result_max=&search=&quick_rank=all&type=all&page={}&size=100&sort=srank&sort_type=asc&current_type=all',
                 },
@@ -84,11 +82,18 @@ class QimaiSpider(Manager):
                     url = url_page.get('url')
                     # url = 'https://api.qimai.cn/appDetail/keywordDetail?analysis=dkZJBhgIPR9BUF4PSwpcTxIJFQw8HA5UWFsjR1MPA1dWU1pMQUoAcRRQ'
                     data = url_page.get('data')
-                    data = data.format(parms_dict["sdate"], parms_dict["edate"], parms_dict["appid"],
-                                       parms_dict["version"], parms_dict["device"], page)
-                    yield MyFormRequests(url=url, headers=self.header2, callback=self.parse, level=1, data=data,
-                                         meta={'parms': parms_dict, 'app': app})
+                    data = data.format(parms_dict["sdate"], parms_dict["edate"], parms_dict["appid"], parms_dict["version"], parms_dict["device"], page)
+                    ss_url = 'http://spider.weizhipin.com/ns/s/qimai/beforeRequest'
+                    ss_json = {'url': "/appDetail/keywordDetail", 'baseURL': "https://api.qimai.cn", 'params': {}, }
 
+                    yield MyFormRequests(url=ss_url, callback=self.get_s, level=1, json_params={'json_data':json.dumps(ss_json)}, meta={'parms': parms_dict, 'app': app, 'url':url, 'data':data}, proxy=None)
+
+
+
+    def get_s(self, response):
+        analysis = response.text
+        url = response.meta.get('url').format(analysis)
+        yield MyFormRequests(url=url, headers=self.header2, callback=self.parse, level=2, data=response.meta.get('data'), meta={'parms': response.meta.get('parms'), 'app': response.meta.get('app')})
     def parse(self, response):
         parms = response.meta.get('parms')
         app = response.meta.get('app')
@@ -101,20 +106,20 @@ class QimaiSpider(Manager):
                         'now_time_stamp': stamp}
             self.kafka_producer('boss.de_nine.spider.qimai_App_spider', msg_dict)
 
-    def get_ss(self, ss):
-        """
-        :param js_path: js文件路径
-        :param function_name: 要执行的js方法名
-        :param kwargs: 执行js时需要传的参数
-        :return: js返回的结果
-        """
-        js = ""
-        fp1 = open('./tools.js', encoding='utf-8')
-        js += fp1.read()
-        fp1.close()
-        ctx2 = execjs.compile(js)
-        self.logger.info('55555555555555555')
-        return ctx2.call('beforeRequest', ss)
+    # def get_ss(self, ss):
+    #     """
+    #     :param js_path: js文件路径
+    #     :param function_name: 要执行的js方法名
+    #     :param kwargs: 执行js时需要传的参数
+    #     :return: js返回的结果
+    #     """
+    #     js = ""
+    #     fp1 = open('./tools.js', encoding='utf-8')
+    #     js += fp1.read()
+    #     fp1.close()
+    #     ctx2 = execjs.compile(js)
+    #     self.logger.info('55555555555555555')
+    #     return ctx2.call('beforeRequest', ss)
 
 
 if __name__ == '__main__':

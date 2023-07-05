@@ -19,7 +19,7 @@ retry_http_codes = [209, 301, 302, 400, 403, 404, 405, 408, 412, 429, 500, 502, 
 UA_PROXY = True  # 是否开启UA池代理
 IS_PROXY = True  # 是否开启代理
 IS_SAMEIP = False  # 是否开启同一ip会话
-Agent_whitelist = ['127.0.0.1']  # 代理白名单
+Agent_whitelist = ['127.0.0.1', 'http://spider.weizhipin.com/ns/s/qimai/beforeRequest']  # 代理白名单
 
 # 连接redis数据库
 REDIS_HOST_LISTS = [{'yours': '6379'}]  # 主机名
