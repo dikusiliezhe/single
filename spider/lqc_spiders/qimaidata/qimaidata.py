@@ -11,7 +11,7 @@ from config.all_config import *
 class QimaidataSpider(Manager):
     name = 'qimaidata'
     custom_settings = {
-        'PREFETCH_COUNT': 50,
+        'PREFETCH_COUNT': 10,
         # 'retry_http_codes': [202, 412],
         'Waiting_time': 300,
         'IS_PROXY': True,
