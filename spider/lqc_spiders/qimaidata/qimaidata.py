@@ -109,17 +109,14 @@ class QimaidataSpider(Manager):
         :return: js返回的结果
         """
         js = ""
-        self.logger.info('33333333333333333')
         fp1 = open('./tools.js', encoding='utf-8')
-        self.logger.info('44444444444444444')
         js += fp1.read()
         fp1.close()
-        self.logger.info(js)
         try:
             ctx2 = execjs.compile(js)
         except :
             import traceback
-            traceback.print_exc()
+            self.logger.info(traceback.print_exc())
         self.logger.info('55555555555555555')
         return ctx2.call('beforeRequest', ss)
 
