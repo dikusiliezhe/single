@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)).split('spiders')[0])
 from config.all_config import *
-
+import execjs
 
 class QimaiSpider(Manager):
     name = 'qimai'
