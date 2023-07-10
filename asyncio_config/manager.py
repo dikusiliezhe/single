@@ -87,7 +87,8 @@ class Manager(Basic, LoopGetter):
         else:
             LoopGetter.__init__(self)
             Basic.__init__(self, queue_name=self.name, class_name='Manager')
-        self.pages = int(sys.argv[1]) if len(sys.argv) > 1 else None
+        self.pages = None
+        self.params = sys.argv[1] if len(sys.argv) > 1 else None
         self.logger.name = logging.getLogger(__name__).name
         self.num = PREFETCH_COUNT
         self.is_proxy = IS_PROXY

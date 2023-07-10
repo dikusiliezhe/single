@@ -36,7 +36,9 @@ class MqProducer:
         self.lock = threading.Lock()  # 线程锁
         self.work_list = []  # 线程子任务池
         self.operating_system = sys.platform  # 运行平台
-        self.pages = sys.argv[1] if len(sys.argv) > 1 else None
+        # self.pages = sys.argv[1] if len(sys.argv) > 1 else None
+        self.pages = None
+        self.params = sys.argv[1] if len(sys.argv) > 1 else None
         self.queue_name = self.make_queue_name(queue_name)
         self.req_s = requests.session()
         self.callback_map = {}  # 回调函数优先级map表
