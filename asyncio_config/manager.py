@@ -94,6 +94,7 @@ class Manager(Basic, LoopGetter):
         self.is_proxy = IS_PROXY
         self.is_sameip = IS_SAMEIP
 
+
     def Environmental_judgment(self):
         if self.operating_system == 'linux' and self.pages and len(sys.argv) > 1:
             return True
