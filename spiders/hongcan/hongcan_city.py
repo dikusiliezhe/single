@@ -86,7 +86,6 @@ class HongcanCitySpider(Manager):
         return ctx2.call('encryptWithAES', ss)
 
 
-
 if __name__ == '__main__':
     start_run = HongcanCitySpider()
     start_run.run()
