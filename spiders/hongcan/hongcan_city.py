@@ -73,8 +73,8 @@ class HongcanCitySpider(Manager):
                 meta['star_score'] = data.get('star_score')
                 meta['avg_price'] = data.get('avg_price')
                 meta['store_id'] = data.get('store_id')
-                self.prints(meta)
-                self.r.lpush('hongcan_data_city', meta['store_id'])
+                # self.prints(meta)
+                self.r.sadd('hongcan_data_city', meta['store_id'])
                 self.kafka_producer('boss.de_nine.spider.hongcanApp', json.dumps(meta, ensure_ascii=False))
 
     def get_ss(self, ss):
