@@ -75,7 +75,7 @@ class HongcanCitySpider(Manager):
                 meta['store_id'] = data.get('store_id')
                 # self.prints(meta)
                 self.r.sadd('hongcan_data_city', meta['store_id'])
-                self.kafka_producer('boss.de_nine.spider.hongcanApp', json.dumps(meta, ensure_ascii=False))
+                self.kafka_producer('boss.de_nine.spider.hongcanApp', meta)
 
     def get_ss(self, ss):
         js = ""
