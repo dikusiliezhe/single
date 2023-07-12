@@ -13,6 +13,7 @@ import hashlib
 import logging
 import pymysql
 import datetime
+import boto3
 from items import *
 from kafka import KafkaProducer
 from datetime import datetime, date
@@ -21,7 +22,7 @@ from filestream_y.FileStream_y import stream_type
 from config.spider_log import SpiderLog
 from asyncio_config.my_Requests import MyRequests, MyFormRequests
 from settings import REDIS_HOST_LISTS, Mysql, redis_connection, kafka_servers, kafka_connection, access_key_id, \
-    access_key_secret, bucket_name, endpoint, IS_INSERT
+    access_key_secret, bucket_name, endpoint, IS_INSERT, REDIS_PARAMS
 
 import re
 from middleware.pymysqlpool.pymysqlpool import ConnectionPool
@@ -136,15 +137,24 @@ class ParentObj(SpiderLog, SingleTool):
     def get_bucket(self):
         return oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name)
 
-    def oss_push_img(self, url, data, suffix='', custom=False, header={}):
+    def get_s3(self):
+        s3_client = boto3.client(
+            service_name='s3',
+            aws_access_key_id=access_key_id,
+            aws_secret_access_key=access_key_secret,
+            endpoint_url=endpoint
+        )
+        return s3_client
+    def oss_push_img(self, url, data, suffix='', file_path='', custom=False, header={}):
         """
         :param url: 详情页链接
         :param data: 文件二进制数据流
         return: 对外能访问的图片URL
         """
+
         if len(data) < 10:
             return url
-        oss_bucket = self.get_bucket()
+        oss_bucket = self.get_s3()
         stream = stream_type(data, header)
         if not stream and not custom:
             suffix_list = ['.doc', '.docx', '.xlr', '.xls', '.xlsx', '.pdf', '.txt', '.jpg', '.png', '.rar', '.zip']
@@ -160,12 +170,12 @@ class ParentObj(SpiderLog, SingleTool):
                 suffix = '.' + suffix
         if 'html' in suffix or suffix == '.':
             return url
-        url_md5 = hashlib.sha1(url.encode()).hexdigest() + suffix
-        if self.spider_sign:
-            url_md5 = 'proposed/' + hashlib.sha1(url.encode()).hexdigest() + suffix
-        oss_bucket.put_object(url_md5, data)
-        oss_url = f'https://bid.snapshot.qudaobao.com.cn/{url_md5}'
-        return oss_url
+        url_md5 = file_path + hashlib.sha1(url.encode()).hexdigest() + suffix
+        # if self.spider_sign:
+        #     url_md5 = 'proposed/' + hashlib.sha1(url.encode()).hexdigest() + suffix
+        oss_bucket.put_object(Body=data, Bucket=bucket_name, Key=url_md5)
+        # oss_url = f'https://bid.snapshot.qudaobao.com.cn/{url_md5}'
+        return url_md5
 
 
 
@@ -411,7 +421,7 @@ class KafkaDb(ParentObj):
 class RedisDb(ParentObj):
     def __init__(self, key='', custom_settings=None, **kwargs):
         super().__init__(custom_settings=custom_settings, **kwargs)
-        self.key = 'ysh_' + key
+        self.key = key
         if custom_settings:
             for varName, value in custom_settings.items():
                 s = globals().get(varName)
@@ -420,7 +430,7 @@ class RedisDb(ParentObj):
         if redis_connection:
             if len(REDIS_HOST_LISTS) == 1:
                 for k, v in REDIS_HOST_LISTS[0].items():
-                    self.pool = redis.ConnectionPool(host=k, port=v, db=1, decode_responses=True)
+                    self.pool = redis.ConnectionPool(host=k, port=v, decode_responses=True,  password=REDIS_PARAMS['password'])
                     self.r = redis.Redis(connection_pool=self.pool)
             # elif len(REDIS_HOST_LISTS) > 1:
             #     self.r = RedisCluster(startup_nodes=self.startup_nodes, decode_responses=True)
@@ -439,6 +449,14 @@ class RedisDb(ParentObj):
         # 按优先级将键降序排序
         keys = sorted(keys, key=lambda x: int(x.split('-')[-1]), reverse=True)
         return keys
+
+    def get_redis_value(self, redis_name, key):
+        values = self.r.hget(redis_name, key)
+        return values
+
+    def set_redis_value(self, redis_name, key, value):
+        result = self.r.hset(redis_name, key, value)
+        return result
 
     def push_task(self, tasks, key=None, level=0):
         '''

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 
 # 并发数
 PREFETCH_COUNT = 50
@@ -22,9 +23,9 @@ IS_SAMEIP = False  # 是否开启同一ip会话
 Agent_whitelist = ['127.0.0.1', 'http://spider.weizhipin.com/ns/s/qimai/beforeRequest']  # 代理白名单
 
 # 连接redis数据库
-REDIS_HOST_LISTS = [{'yours': '6379'}]  # 主机名
-# REDIS_PARAMS = {'password': 'password'} # 单机情况下,密码没有的不设置
-redis_connection = False  # 是否开启redis连接
+REDIS_HOST_LISTS = [{'v-bosssearchredis-01' if sys.platform == 'linux' else '192.168.22.81': '6479'}]  # 主机名
+REDIS_PARAMS = {'password': 'NzIuMjEuMS4x'} # 单机情况下,密码没有的不设置
+redis_connection = True  # 是否开启redis连接
 
 # 连接kafka数据库
 kafka_servers = {
@@ -93,8 +94,7 @@ EMAIL_CONFIG = {
     'receivers': 'yours',  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱，发送多人用逗号隔开
 }
 
-access_key_id = 'yours'
-access_key_secret = 'yours'
-bucket_name = 'yours'
-endpoint = 'yours'  # 外网
-# endpoint = 'oss-cn-beijing-internal.aliyuncs.com'  # 内网
+access_key_id = '7D1IY54U9SSKZ1T752IV'
+access_key_secret = 'wrCsIo0MYKuATv93UXuNXDT1mV0E6opeomYX2LTl'
+bucket_name = 'denine-searchengines-img'
+endpoint = 'http://s3-ceph02-online.kanzhun.tech'  # 外网
