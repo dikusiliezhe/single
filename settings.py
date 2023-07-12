@@ -98,3 +98,4 @@ access_key_id = '7D1IY54U9SSKZ1T752IV'
 access_key_secret = 'wrCsIo0MYKuATv93UXuNXDT1mV0E6opeomYX2LTl'
 bucket_name = 'denine-searchengines-img'
 endpoint = 'http://s3-ceph02-online.kanzhun.tech'  # 外网
+
