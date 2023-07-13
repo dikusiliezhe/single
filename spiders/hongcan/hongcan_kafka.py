@@ -28,6 +28,7 @@ class HongcanKafkaSpider(Manager):
 
             # 处理获取到的hash字段和对应的值
 
+
             for field, value in hash_data.items():
                 print(value)
                 self.kafka_producer('boss.de_nine.spider.hongcanApp_brand', json.loads(value))
