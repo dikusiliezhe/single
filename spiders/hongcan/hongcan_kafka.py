@@ -8,7 +8,10 @@ from config.all_config import *
 
 class HongcanKafkaSpider(Manager):
     name = 'hongcan_kafka'
-
+    custom_settings = {
+        'PREFETCH_COUNT': 10,
+        'Waiting_time': 10000,
+    }
     def __init__(self):
         Manager.__init__(self)
         # self.online = True
@@ -25,6 +28,7 @@ class HongcanKafkaSpider(Manager):
             for field, value in hash_data.items():
                 print(value)
                 self.kafka_producer('boss.de_nine.spider.hongcanApp_brand', json.loads(value))
+
             # 如果cursor值为0，表示迭代完成，退出循环
             if cursor == 0:
                 break
