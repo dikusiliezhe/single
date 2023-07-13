@@ -43,6 +43,7 @@ class HongcanKafkaSpider(Manager):
         print(response.text)
 
 
+
 if __name__ == '__main__':
     start_run = HongcanKafkaSpider()
     start_run.run()
