@@ -18,6 +18,8 @@ class HongcanKafkaSpider(Manager):
         self.header = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
         }
+
+    def start_requests(self):
         cursor = 0
         while True:
             # 使用HSCAN命令进行迭代
@@ -32,7 +34,6 @@ class HongcanKafkaSpider(Manager):
             # 如果cursor值为0，表示迭代完成，退出循环
             if cursor == 0:
                 break
-    def start_requests(self):
         url = 'https://www.baidu.com/'
         yield MyRequests(url=url, headers=self.header, callback=self.parse, level=1)
 
