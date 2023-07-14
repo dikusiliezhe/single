@@ -65,8 +65,8 @@ Rabbitmq = {
     'Sgin': 'lqc',
     'username': 'admin',
     'password': 'admin',
-    # 'host': '192.168.22.81',  # 线下
-    'host': '127.0.0.1',  # 线上
+    'host': '127.0.0.1' if sys.platform == 'linux' else '192.168.22.81',  # 线下
+    # 'host': '127.0.0.1',  # 线上
     'port': 5672,
     'max_retries': 3,  # 最大重连次数
     'async_thread_pool_size': 4,  # 异步发送线程池
@@ -80,8 +80,8 @@ Delay_time = 4  # 自动关闭程序最大延迟时间
 
 # custom_settings = {}
 
-# log_path = '/Users/admin/Downloads/single_process-main/log_filed'  # 日志保存路径
-log_path = '/data/spider/lqc/log_filed/'  # 日志保存路径
+log_path = '/data/spider/lqc/log_filed/' if sys.platform == 'linux' else '/Users/admin/Downloads/single_process-main/log_filed' # 日志保存路径
+# log_path = '/data/spider/lqc/log_filed/'  # 日志保存路径
 log_level = 'DEBUG'  # 日志级别
 
 # 邮件发送

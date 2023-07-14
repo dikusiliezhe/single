@@ -89,10 +89,12 @@ class Manager(Basic, LoopGetter):
             Basic.__init__(self, queue_name=self.name, class_name='Manager')
         self.pages = None
         self.params = sys.argv[1] if len(sys.argv) > 1 else None
+
         self.logger.name = logging.getLogger(__name__).name
         self.num = PREFETCH_COUNT
         self.is_proxy = IS_PROXY
         self.is_sameip = IS_SAMEIP
+        self.logger.info(self.params)
 
 
     def Environmental_judgment(self):
@@ -210,6 +212,8 @@ class Manager(Basic, LoopGetter):
             self.rm_task()  # 清除已结束的线程
             time.sleep(Delay_time)
         self.finished_info(self.starttime, self.start_time)  # 完成时的日志打印
+        if self.params:
+            self.set_redis_value()
         os._exit(0)  # 暂时重新启用，待观察
 
     def Requests(self, ch, method, properties, body):
